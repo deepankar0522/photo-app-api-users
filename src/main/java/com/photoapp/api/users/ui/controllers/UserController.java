@@ -17,9 +17,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.print.attribute.standard.Media;
 import javax.validation.Valid;
 import javax.xml.ws.Response;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
+@CrossOrigin()
 public class UserController {
 
     @Autowired
@@ -31,6 +33,12 @@ public class UserController {
     @GetMapping("/status/check")
     public String getStatus() {
         return "Working on .... " + environment.getProperty("local.server.port");
+    }
+
+    @GetMapping(value = "/allUsers")
+    public ResponseEntity<List> getAllUsers(){
+        List<UserDto> users = userService.getUsers();
+        return new ResponseEntity<List>(users, HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/createUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

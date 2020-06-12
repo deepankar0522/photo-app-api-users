@@ -4,7 +4,6 @@ import com.photoapp.api.users.data.UserRepository;
 import com.photoapp.api.users.data.entiry.UserEntity;
 import com.photoapp.api.users.service.UserService;
 import com.photoapp.api.users.shared.dto.UserDto;
-import com.sun.xml.internal.messaging.saaj.util.Base64;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.net.URI;
-import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -39,7 +37,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserDetailsByEmail(String email) {
-        System.out.println("getUserDetailsByEmail .. "+email);
         UserEntity userEntity = userRepository.findByEmail(email);
         System.out.println("User Entity: "+userEntity);
         if(userEntity == null) throw new UsernameNotFoundException(email);
@@ -49,7 +46,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEntity userEntity = userRepository.findByEmail(email);
-        //System.out.println("User Entity: "+userEntity);
         return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), true, true, true, true, new ArrayList<>()) ;
+    }
+
+    @Override
+    public List<UserDto> getUsers() {
+        ArrayList allUsers = (ArrayList) userRepository.findAll();
+        return allUsers;
     }
 }

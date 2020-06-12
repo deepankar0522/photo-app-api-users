@@ -5,10 +5,14 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 public interface UserService extends UserDetailsService {
     public UserDto createUser(UserDto userDto);
 
     public UserDto getUserDetailsByEmail(String email);
 
     public UserDetails loadUserByUsername(String email);
+
+    List<UserDto> getUsers();
 }

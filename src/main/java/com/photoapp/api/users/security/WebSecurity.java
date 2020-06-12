@@ -2,7 +2,6 @@ package com.photoapp.api.users.security;
 
 import com.photoapp.api.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -23,14 +22,19 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
 
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-        http.authorizeRequests().antMatchers("/**").hasIpAddress(environment.getProperty("gateway.ip")).and().addFilter(getAuthenticationFilter());
+        http.authorizeRequests()
+                .antMatchers("/**")
+                .hasIpAddress(environment.getProperty("gateway.ip"))
+                .and()
+                .addFilter(getAuthenticationFilter());
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userService,environment,authenticationManager());
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(userService, environment, authenticationManager());
         authenticationFilter.setFilterProcessesUrl(environment.getProperty("login.url.path"));
         return authenticationFilter;
     }
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
