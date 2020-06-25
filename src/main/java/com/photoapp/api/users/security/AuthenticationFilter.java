@@ -40,9 +40,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException {
         try {
-            LoginRequestModel creds = new ObjectMapper().readValue(req.getInputStream(), LoginRequestModel.class);
-            System.out.println("User = "+creds.getEmail() + " : " + creds.getPassword());
-            return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
+            LoginRequestModel credentials = new ObjectMapper().readValue(req.getInputStream(), LoginRequestModel.class);
+            System.out.println("User = "+credentials.getEmail() + " : " + credentials.getPassword());
+            return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(credentials.getEmail(), credentials.getPassword(), new ArrayList<>()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -57,6 +57,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         Gson gson = new Gson();
         ModelMapper modelMapper = new ModelMapper();
         LoginResponseModel loginResponseModel = modelMapper.map(userDetails, LoginResponseModel.class);
+        loginResponseModel.setToken(token);
         PrintWriter out = res.getWriter();
         res.setContentType("application/json");
         res.setCharacterEncoding("UTF-8");

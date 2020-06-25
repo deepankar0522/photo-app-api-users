@@ -6,7 +6,7 @@ eureka:
         instance-id: ${spring.application.name}:${spring.application.instance_id:${random.value}}
 
 gateway:
-    ip: 192.168.0.103
+    ip: 192.168.1.205
 
 login:
     url:
