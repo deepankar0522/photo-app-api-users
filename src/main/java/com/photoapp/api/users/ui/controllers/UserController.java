@@ -4,6 +4,10 @@ import com.photoapp.api.users.service.UserService;
 import com.photoapp.api.users.shared.dto.UserDto;
 import com.photoapp.api.users.ui.model.CreateUserRequestModel;
 import com.photoapp.api.users.ui.model.CreateUserResponseModel;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.modelmapper.spi.MatchingStrategy;
@@ -22,6 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 @CrossOrigin()
+@Api(produces = "application/json", value = "Operations pertaining to manager photo in the application")
 public class UserController {
 
     @Autowired
@@ -42,6 +47,11 @@ public class UserController {
     }
 
     @PostMapping(value = "/createUser", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ApiOperation(value = "Create a new donor", response = ResponseEntity.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Successfully created a new user")
+    }
+    )
     public ResponseEntity<CreateUserResponseModel> createUser(@Valid @RequestBody CreateUserRequestModel createUserRequestModel){
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);

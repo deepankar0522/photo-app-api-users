@@ -19,7 +19,7 @@ spring:
     application:
         name: users-ws
     datasource:
-        password: admin123
+        password: root
         testWhileIdle: true
         url: jdbc:mysql://localhost:3306/photoapp?useSSL=false
         username: root
